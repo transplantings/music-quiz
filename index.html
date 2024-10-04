@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Music Challenge</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f4f4f4;
+      padding: 20px;
+    }
+    .track {
+      margin: 20px 0;
+    }
+    .track audio {
+      margin: 10px 0;
+    }
+    .track label {
+      margin-right: 15px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:disabled {
+      background-color: grey;
+    }
+  </style>
+</head>
+<body>
+  <h1>AI Music Challenge - Daily</h1>
+  <p>Listen to each track and guess if it's AI or Human!</p>
+
+  <div id="track1" class="track">
+    <audio controls>
+      <source src="song01.wav" type="audio/mpeg">
+    </audio>
+    <label>
+      <input type="radio" name="track1" value="AI"> AI
+    </label>
+    <label>
+      <input type="radio" name="track1" value="Human"> Human
+    </label>
+  </div>
+
+  <div id="track2" class="track">
+    <audio controls>
+      <source src="song02.wav" type="audio/mpeg">
+    </audio>
+    <label>
+      <input type="radio" name="track2" value="AI"> AI
+    </label>
+    <label>
+      <input type="radio" name="track2" value="Human"> Human
+    </label>
+  </div>
+
+  <div id="track3" class="track">
+    <audio controls>
+      <source src="song03.wav" type="audio/mpeg">
+    </audio>
+    <label>
+      <input type="radio" name="track3" value="AI"> AI
+    </label>
+    <label>
+      <input type="radio" name="track3" value="Human"> Human
+    </label>
+  </div>
+
+  <div id="track4" class="track">
+    <audio controls>
+      <source src="song04.wav" type="audio/mpeg">
+    </audio>
+    <label>
+      <input type="radio" name="track4" value="AI"> AI
+    </label>
+    <label>
+      <input type="radio" name="track4" value="Human"> Human
+    </label>
+  </div>
+
+  <button id="revealBtn" onclick="revealAnswers()" disabled>Reveal</button>
+
+  <script>
+    const revealButton = document.getElementById('revealBtn');
+    const tracks = document.querySelectorAll('.track');
+
+    // Enable the Reveal button once all tracks are guessed
+    tracks.forEach(track => {
+      track.addEventListener('change', () => {
+        const allGuessed = Array.from(tracks).every(track => 
+          track.querySelector('input:checked')
+        );
+        revealButton.disabled = !allGuessed;
+      });
+    });
+
+    function revealAnswers() {
+      alert('Track 1: AI\nTrack 2: Human\nTrack 3: AI\nTrack 4: Human'); 
+      // Replace with the correct answers when you know them!
+    }
+  </script>
+</body>
+</html>
