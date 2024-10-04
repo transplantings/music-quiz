@@ -10,33 +10,66 @@
       text-align: center;
       background-color: #f4f4f4;
       padding: 20px;
+      max-width: 800px;
+      margin: 0 auto;
     }
     .track {
       margin: 20px 0;
+      padding: 15px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     .track audio {
       margin: 10px 0;
+      width: 100%;
+      max-width: 400px;
     }
     .track label {
       margin-right: 15px;
+    }
+    .result {
+      display: none;
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 4px;
+    }
+    .correct {
+      background-color: #d4edda;
+      color: #155724;
+    }
+    .incorrect {
+      background-color: #f8d7da;
+      color: #721c24;
     }
     button {
       padding: 10px 20px;
       background-color: #007BFF;
       color: white;
       border: none;
+      border-radius: 4px;
       cursor: pointer;
       font-size: 16px;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #0056b3;
     }
     button:disabled {
-      background-color: grey;
+      background-color: #cccccc;
+      cursor: not-allowed;
+    }
+    .score {
+      display: none;
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
   <h1>AI Music Challenge - Daily</h1>
   <p>Listen to each track and guess if it's AI or Human!</p>
-
   <div id="track1" class="track">
     <audio controls>
       <source src="Song01.mp3" type="audio/mpeg">
@@ -47,8 +80,8 @@
     <label>
       <input type="radio" name="track1" value="Human"> Human
     </label>
+    <div class="result"></div>
   </div>
-
   <div id="track2" class="track">
     <audio controls>
       <source src="Song02.mp3" type="audio/mpeg">
@@ -59,8 +92,8 @@
     <label>
       <input type="radio" name="track2" value="Human"> Human
     </label>
+    <div class="result"></div>
   </div>
-
   <div id="track3" class="track">
     <audio controls>
       <source src="Song03.mp3" type="audio/mpeg">
@@ -71,8 +104,8 @@
     <label>
       <input type="radio" name="track3" value="Human"> Human
     </label>
+    <div class="result"></div>
   </div>
-
   <div id="track4" class="track">
     <audio controls>
       <source src="Song04.mp3" type="audio/mpeg">
@@ -83,13 +116,21 @@
     <label>
       <input type="radio" name="track4" value="Human"> Human
     </label>
+    <div class="result"></div>
   </div>
-
-  <button id="revealBtn" onclick="revealAnswers()" disabled>Reveal</button>
-
+  <button id="revealBtn" onclick="revealAnswers()" disabled>Reveal Answers</button>
+  <div id="score" class="score"></div>
   <script>
     const revealButton = document.getElementById('revealBtn');
     const tracks = document.querySelectorAll('.track');
+    const scoreDiv = document.getElementById('score');
+    
+    const correctAnswers = {
+      track1: 'Human',
+      track2: 'AI',
+      track3: 'Human',
+      track4: 'Human'
+    };
 
     // Enable the Reveal button once all tracks are guessed
     tracks.forEach(track => {
@@ -102,8 +143,37 @@
     });
 
     function revealAnswers() {
-      alert('Track 1: Human\nTrack 2: AI\nTrack 3: Human\nTrack 4: Human'); 
-      // Replace with the correct answers when you know them!
+      let correctCount = 0;
+      
+      tracks.forEach((track, index) => {
+        const trackId = `track${index + 1}`;
+        const selectedAnswer = track.querySelector('input:checked').value;
+        const correctAnswer = correctAnswers[trackId];
+        const resultDiv = track.querySelector('.result');
+        
+        resultDiv.style.display = 'block';
+        
+        if (selectedAnswer === correctAnswer) {
+          correctCount++;
+          resultDiv.className = 'result correct';
+          resultDiv.textContent = `Correct! This was ${correctAnswer}-made music.`;
+        } else {
+          resultDiv.className = 'result incorrect';
+          resultDiv.textContent = `Incorrect. This was actually ${correctAnswer}-made music.`;
+        }
+      });
+
+      // Display final score
+      scoreDiv.style.display = 'block';
+      scoreDiv.textContent = `Final Score: ${correctCount}/4`;
+      
+      // Disable all radio buttons after reveal
+      document.querySelectorAll('input[type="radio"]').forEach(radio => {
+        radio.disabled = true;
+      });
+      
+      // Disable reveal button
+      revealButton.disabled = true;
     }
   </script>
 </body>
